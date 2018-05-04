@@ -26,4 +26,15 @@ public interface GoodsService {
 	
 	void buyGoods(long userPhone, long goodsId, boolean useProcedure);
 
+	/**
+	 * 添加商品
+	 * @param goods
+	 */
+	int addGoods(Goods goods);
+
+	/**
+	 * 测试事务用
+	 */
+	void buyGoods();
+
 }

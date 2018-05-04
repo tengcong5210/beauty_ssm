@@ -5,9 +5,9 @@
 
 	<insert id="insertOrder">
 		INSERT INTO
-		_order(user_id,goods_id,title)
+		_order(user_id,goods_id,title,create_time)
 		VALUES
-		(#{userId},#{goodsId},#{title})
+		(#{userId},#{goodsId},#{title},now())
 	</insert>
 
 	<select id="queryByUserPhone" resultType="Order">

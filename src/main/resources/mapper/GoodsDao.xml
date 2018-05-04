@@ -29,5 +29,12 @@
           #{result,jdbcType=INTEGER,mode=OUT}
         )
     </select>
+    <!--插入-->
+	<insert id="insertGoods" parameterType="com.yingjun.ssm.entity.Goods">
+		INSERT INTO
+		_goods(title,state,price,number,create_time,update_time)
+		VALUES
+		(#{title},#{state},#{price},#{number},now(),now())
+	</insert>
 
 </mapper>

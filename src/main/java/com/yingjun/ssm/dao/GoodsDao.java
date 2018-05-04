@@ -34,6 +34,13 @@ public interface GoodsDao {
      * @param paramMap
      */
     void bugWithProcedure(Map<String, Object> paramMap);
+
+    /**
+     * 插入商品
+     * @param goods
+     * @return
+     */
+    int insertGoods(Goods goods);
     
     
 }

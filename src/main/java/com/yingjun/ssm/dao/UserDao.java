@@ -1,10 +1,9 @@
 package com.yingjun.ssm.dao;
 
-import java.util.List;
-
+import com.yingjun.ssm.entity.User;
 import org.apache.ibatis.annotations.Param;
 
-import com.yingjun.ssm.entity.User;
+import java.util.List;
 
 public interface UserDao {
 
@@ -31,5 +30,6 @@ public interface UserDao {
      * 增加积分
      */
     void addScore(@Param("add")int add);
-	
+
+    int updateUser(User user);
 }

@@ -23,4 +23,12 @@
 		score = score + #{add}
 	</update>
 
+	<update id="updateUser" parameterType="com.yingjun.ssm.entity.User">
+		update _user set
+		user_name = #{userName},
+		user_phone = #{userPhone},
+		score = #{score}
+		where user_id = #{userId}
+	</update>
+
 </mapper>

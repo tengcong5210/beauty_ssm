@@ -99,4 +99,13 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 	}
 
+	@Override
+	public int addGoods(Goods goods) {
+		return goodsDao.insertGoods(goods);
+	}
+
+	@Override
+	public void buyGoods() {
+
+	}
 }

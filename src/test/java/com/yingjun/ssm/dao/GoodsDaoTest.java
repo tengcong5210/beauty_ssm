@@ -1,11 +1,13 @@
 package com.yingjun.ssm.dao;
 
 import com.yingjun.ssm.entity.Goods;
+import com.yingjun.ssm.service.GoodsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +46,17 @@ public class GoodsDaoTest {
 		goodsDao.bugWithProcedure(map);
 		//获取result
 		System.out.println("testBugWithProcedure result:"+map.get("result"));
+	}
+	@Test
+	public void testAddGoods(){
+		Goods goods=new Goods();
+		goods.setNumber(10);
+		goods.setPrice(149F);
+		Short s=1;
+		goods.setState(s);
+		goods.setTitle("海贼王漫画经典版");
+		int result=goodsDao.insertGoods(goods);
+		Assert.isTrue(result==1,"result不等于1");
 	}
 
 }

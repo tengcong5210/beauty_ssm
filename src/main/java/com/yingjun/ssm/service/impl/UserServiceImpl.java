@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,7 +38,127 @@ public class UserServiceImpl implements UserService {
 		}
 		return result_cache;
 	}
-	
-	
 
+	/**
+	 * 测试事务
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public int updateUser() {
+		/*User user=userDao.queryByPhone(18768128888L);
+		user.setScore(13);
+		userDao.updateUser(user);
+		int i=1/0;//此处设置有异常，此种情况会回滚
+		*/
+
+		/*this.testPrivateInnerMethodTrans();*/
+
+		//updateUser 方法上加上注解，则会回滚，不加注解不会回滚
+		this.testPublicInnerMethodTrans();
+		return 0;
+	}
+
+	/**
+	 * 测试私有方法事务
+	 * @return
+	 */
+	@Transactional
+	private int testPrivateInnerMethodTrans(){
+		User user=userDao.queryByPhone(18768128888L);
+		user.setScore(12);
+		userDao.updateUser(user);
+		//此处设置有异常，正常的情况下应该回滚，但是由于方法没有在接口中定义
+		// spring在做bean解析的时候不能生成该方法的代理，故不能是事务起效果
+		int i=1/0;
+		return 0;
+	}
+
+	/**
+	 * 测试公有内部方法事务
+	 * @return
+	 */
+	@Transactional
+	public int testPublicInnerMethodTrans(){
+		User user=userDao.queryByPhone(18768128888L);
+		user.setScore(14);
+		userDao.updateUser(user);
+		//此处设置有异常，正常的情况下应该回滚，但是由于方法没有在接口中定义
+		// spring在做bean解析的时候不能生成该方法的代理，故不能是事务起效果
+		int i=1/0;
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int updateUserOnExTest() {
+		//1.该方式 不会回滚，因为异常被try catch了。
+		try {
+			User user=userDao.queryByPhone(18768128888L);
+			user.setScore(14);
+			userDao.updateUser(user);
+			int i=1/0;
+		}catch (Exception e){
+			LOG.error("updateUserOnExTest 异常",e);
+		}
+		return 0;
+	}
+
+	/**
+	 * 抛出检查异常，如果不做特殊处理（即不指定rollbackFor）,不会回滚，如果rollbackFor = {Exception.class},则会回滚
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	@Transactional(rollbackFor = {Exception.class})
+	public int updateUserOnThrowExTest() throws Exception {
+		try {
+			User user=userDao.queryByPhone(18768128888L);
+			user.setScore(16);
+			userDao.updateUser(user);
+			int i=1/0;
+		}catch (Exception e){
+			LOG.error("updateUserOnExTest 异常",e);
+			throw new Exception("updateUserOnExTest 异常xxxxxxxxxx");
+		}
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int updateUserOnThrowRuntimeExTest() {
+		try {
+			User user=userDao.queryByPhone(18768128888L);
+			user.setScore(16);
+			userDao.updateUser(user);
+			int i=1/0;
+		}catch (Exception e){
+			LOG.error("抛出运行时异常",e);
+			throw new RuntimeException("抛出运行时异常");
+		}
+		return 0;
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
+	public int updateUserOnRequiredTest() {
+		System.out.println("=============开始updateUserOnRequiredTest");
+		User user=userDao.queryByPhone(18768128888L);
+		user.setScore(18);
+		userDao.updateUser(user);
+		//int i=1/0;
+		return 0;
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public int updateUserOnRequiredNewTest() {
+		System.out.println("============开始updateUserOnRequiredNewTest");
+		User user=userDao.queryByPhone(18768128888L);
+		user.setScore(17);
+		userDao.updateUser(user);
+		this.updateUserOnRequiredTest();
+		int i=1/0;
+		return 0;
+	}
 }
