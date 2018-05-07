@@ -20,7 +20,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void testUpdateUser() {
+    public void testUpdateUser()  {
        //1.
         // userService.updateUser();
 
@@ -36,8 +36,12 @@ public class UserServiceTest {
 
         //4.抛出运行时异常 ,会回滚
         //userService.updateUserOnThrowRuntimeExTest();
+        try {
+            userService.updateUserOnRequiredNewTest();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        userService.updateUserOnRequiredNewTest();
 
     }
 }

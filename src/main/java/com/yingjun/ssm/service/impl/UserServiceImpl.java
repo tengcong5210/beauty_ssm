@@ -140,25 +140,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED)
-	public int updateUserOnRequiredTest() {
+	@Transactional(propagation=Propagation.REQUIRES_NEW,rollbackFor = {Exception.class})
+	public int updateUserOnRequiredTest() throws Exception{
 		System.out.println("=============开始updateUserOnRequiredTest");
 		User user=userDao.queryByPhone(18768128888L);
-		user.setScore(18);
+		user.setScore(19);
 		userDao.updateUser(user);
-		//int i=1/0;
+		int i=1/0;
 		return 0;
 	}
-
 	@Override
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public int updateUserOnRequiredNewTest() {
+	//@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Transactional(rollbackFor = {Exception.class})
+	public int updateUserOnRequiredNewTest() throws Exception {
 		System.out.println("============开始updateUserOnRequiredNewTest");
-		User user=userDao.queryByPhone(18768128888L);
-		user.setScore(17);
-		userDao.updateUser(user);
+
 		this.updateUserOnRequiredTest();
-		int i=1/0;
+
+		User user=userDao.queryByPhone(18768128888L);
+		user.setScore(21);
+		userDao.updateUser(user);
+		//int i=1/0;
 		return 0;
 	}
 }

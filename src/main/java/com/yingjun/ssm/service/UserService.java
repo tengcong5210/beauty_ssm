@@ -30,12 +30,12 @@ public interface UserService {
 	 * 事务传播属性 PROPAGATION_REQUIRES
 	 * @return
 	 */
-	int updateUserOnRequiredTest();
+	int updateUserOnRequiredTest()throws Exception;
 	/**
 	 * 事务传播属性 PROPAGATION_REQUIRES_NEW
 	 * @return
 	 */
-	int updateUserOnRequiredNewTest();
+	int updateUserOnRequiredNewTest()throws Exception;
 
 
 
